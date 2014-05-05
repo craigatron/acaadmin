@@ -1,3 +1,11 @@
 body {
   margin-top: 50px;
 }
+
+.red {
+  color: red;
+}
+
+.green {
+  color: #7CFC00;
+}

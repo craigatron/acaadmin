@@ -2,9 +2,35 @@
 
 {% block content %}
   <h3>Current Repertoire</h3>
-  <p>Coming eventually!</p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    {% for song in current %}
+      <tr>{{ song.artist }}</tr>
+      <tr>{{ song.title }}</tr>
+    {% endfor %}
+  </table>
   <h3>Being Arranged</h3>
-  <p>Coming eventually!</p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Arranger</th>
+      </tr>
+    </thead>
+    {% for song in arranging %}
+      <tr>
+        <td>{{ song.artist }}</td>
+        <td>{{ song.title }}</td>
+        <td>{{ song.arranged_by.first_name }} {{ song.arranged_by.last_name }}</td>
+      </tr>
+    {% endfor %}
+  </table>
   <h3>Prospective Songs</h3>
   <a href="/songs/add" class="btn btn-success">Suggest song</a>
   <table class="table table-striped">
@@ -19,22 +45,34 @@
       </tr>
     </thead>
     {% for song in proposed %}
-      <tr>
-        <td>{{ song.suggested_by.first_name }} {{ song.suggested_by.last_name }}</td>
-        <td>{{ song.artist }}</td>
-        <td>{{ song.title }}</td>
-        <td><a href="{{ song.song_url }}" target="_blank">Link</a></td>
-        <td></td>
-        <td>
-          {% if song.suggested_by == user %}
-            <a href="/songs/{{ song.pk }}/delete">
-              <span class="glyphicon glyphicon-remove"/>
-            </a>
-          {% endif %}
-        </td>
-      </tr>
+      {% with s=song.song %}
+        <tr>
+          <td>{{ s.suggested_by.first_name }} {{ s.suggested_by.last_name }}</td>
+          <td>{{ s.artist }}</td>
+          <td>{{ s.title }}</td>
+          <td><a href="{{ s.song_url }}" target="_blank">Link</a></td>
+          <td>
+            {% if song.user_vote == 0 %}
+              <i class="fa fa-thumbs-up green"></i>
+            {% else %}
+              <i class="fa fa-thumbs-o-up green"></i>
+            {% endif %}
+            <span class="green">+{{ song.votes.0 }}</span> / {{ song.votes.2 }} / <span class="red">-{{ song.votes.1 }}</span>
+            {% if song.user_vote == 1 %}
+              <i class="fa fa-thumbs-down red"></i>
+            {% else %}
+              <i class="fa fa-thumbs-o-down red"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if s.suggested_by == user %}
+              <a href="/songs/{{ s.pk }}/delete" title="Delete">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endwith %}
     {% endfor %}
   </table>
-  <h3>Retired Songs</h3>
-  <p>Coming eventually!</p>
 {% endblock %}

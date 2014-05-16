@@ -9,3 +9,13 @@ body {
 .green {
   color: #7CFC00;
 }
+
+.vote {
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.unvote i {
+  font-weight: bold;
+}

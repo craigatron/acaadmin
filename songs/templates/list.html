@@ -31,8 +31,8 @@
       </tr>
     {% endfor %}
   </table>
-  <h3>Prospective Songs</h3>
-  <a href="/songs/add" class="btn btn-success">Suggest song</a>
+  <h3 class="pull-left">Prospective Songs</h3>
+  <a href="/songs/add" class="btn btn-success pull-right">Suggest song</a>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -41,6 +41,7 @@
         <th>Title</th>
         <th>URL</th>
         <th>Votes</th>
+        <th>Arrangers</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -52,19 +53,35 @@
           <td>{{ s.title }}</td>
           <td><a href="{{ s.song_url }}" target="_blank">Link</a></td>
           <td>
-            {% if song.user_vote == 0 %}
-              <i class="fa fa-thumbs-up green"></i>
-            {% else %}
-              <i class="fa fa-thumbs-o-up green"></i>
-            {% endif %}
             <span class="green">+{{ song.votes.0 }}</span> / {{ song.votes.2 }} / <span class="red">-{{ song.votes.1 }}</span>
-            {% if song.user_vote == 1 %}
-              <i class="fa fa-thumbs-down red"></i>
-            {% else %}
-              <i class="fa fa-thumbs-o-down red"></i>
-            {% endif %}
           </td>
+          <td></td>
           <td>
+            {% comment %}Smiley{% endcomment %}
+            {% if song.user_vote == 0 %}
+              <div class="vote unvote" title="Remove vote" data-song="{{ s.pk }}">
+            {% else %}
+              <div class="vote upvote" title="I like this!" data-song="{{ s.pk }}">
+            {% endif %}
+              <i class="fa fa-smile-o fa-lg green"></i>
+            </div>
+            {% comment %}Meh{% endcomment %}
+            {% if song.user_vote == 2 %}
+              <div class="vote unvote" title="Remove vote" data-song="{{ s.pk }}">
+            {% else %}
+              <div class="vote mehvote" title="Meh" data-song="{{ s.pk }}">
+            {% endif %}
+              <i class="fa fa-meh-o fa-lg"></i>
+            </div>
+            {% comment %}Frowny{% endcomment %}
+            {% if song.user_vote == 1 %}
+              <div class="vote unvote" title="Remove vote" data-song="{{ s.pk }}">
+            {% else %}
+              <div class="vote downvote" title="I don't like this!" data-song="{{ s.pk }}">
+            {% endif %}
+              <i class="fa fa-frown-o fa-lg red"></i>
+            </div>
+
             {% if s.suggested_by == user %}
               <a href="/songs/{{ s.pk }}/delete" title="Delete">
                 <span class="glyphicon glyphicon-trash"></span>
@@ -75,4 +92,32 @@
       {% endwith %}
     {% endfor %}
   </table>
+{% endblock %}
+
+{% block extrascripts %}
+  <script type="text/javascript">
+    function vote(e, type) {
+      var song_id = $(e.target).parent().data('song');
+      $.get('/songs/' + song_id + '/vote/' + type,
+          function(data) {
+              location.reload(true);
+          }
+      );
+    }
+
+    $(document).ready(function() {
+      $('.upvote').click(function(e) {
+        vote(e, '0');
+      });
+      $('.downvote').click(function(e) {
+        vote(e, '1');
+      });
+      $('.mehvote').click(function(e) {
+        vote(e, '2');
+      });
+      $('.unvote').click(function(e) {
+        vote(e, 'x');
+      });
+    });
+  </script>
 {% endblock %}

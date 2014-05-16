@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
 from songs import forms, models
@@ -13,6 +13,8 @@ def add(request):
       song.state = 0
       song.suggested_by = request.user
       song.save()
+      vote = models.Vote(user=request.user, song=song, vote=0)
+      vote.save()
       return HttpResponseRedirect('/songs')
   else:
     form = forms.SongForm()
@@ -23,11 +25,34 @@ def add(request):
 def delete(request, song_id):
   song = models.Song.objects.get(pk=song_id)
   if song and song.suggested_by == request.user:
+    votes = models.Vote.objects.filter(song=song)
+    for v in votes:
+      v.delete()
     song.delete()
     return HttpResponseRedirect('/songs')
 
   return HttpResponseForbidden()
 
+@login_required
+def vote(request, song_id, vote):
+  song = models.Song.objects.get(pk=song_id)
+  if not song:
+    return HttpResponseBadRequest()
+
+  vote_obj = models.Vote.objects.all().filter(song=song, user=request.user)
+  if vote_obj:
+    vote_obj = vote_obj[0]
+    if vote == 'x':
+      vote_obj.delete()
+      return HttpResponse()
+  else:
+    vote_obj = models.Vote()
+    vote_obj.user = request.user
+    vote_obj.song = song
+
+  vote_obj.vote = int(vote)
+  vote_obj.save()
+  return HttpResponse()
 
 @login_required
 def index(request):

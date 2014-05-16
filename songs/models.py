@@ -25,4 +25,4 @@ class Vote(models.Model):
   vote = models.IntegerField(choices=VOTE_CHOICES)
 
   def __unicode__(self):
-    return ', '.join([self.user.username, str(self.song), self.vote.get_vote_display()])
+    return ', '.join([self.user.username, str(self.song), self.get_vote_display()])

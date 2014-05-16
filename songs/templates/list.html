@@ -10,8 +10,10 @@
       </tr>
     </thead>
     {% for song in current %}
-      <tr>{{ song.artist }}</tr>
-      <tr>{{ song.title }}</tr>
+      <tr>
+        <td>{{ song.artist }}</td>
+        <td>{{ song.title }}</td>
+      </tr>
     {% endfor %}
   </table>
   <h3>Being Arranged</h3>
@@ -27,7 +29,7 @@
       <tr>
         <td>{{ song.artist }}</td>
         <td>{{ song.title }}</td>
-        <td>{{ song.arranged_by.first_name }} {{ song.arranged_by.last_name }}</td>
+        <td>{{ song.arranged_by.first_name }}</td>
       </tr>
     {% endfor %}
   </table>
@@ -48,7 +50,7 @@
     {% for song in proposed %}
       {% with s=song.song %}
         <tr>
-          <td>{{ s.suggested_by.first_name }} {{ s.suggested_by.last_name }}</td>
+          <td>{{ s.suggested_by.first_name }}</td>
           <td>{{ s.artist }}</td>
           <td>{{ s.title }}</td>
           <td><a href="{{ s.song_url }}" target="_blank">Link</a></td>

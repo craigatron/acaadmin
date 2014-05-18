@@ -7,12 +7,18 @@
       <tr>
         <th>Artist</th>
         <th>Title</th>
+        <th>Arrangement</th>
       </tr>
     </thead>
     {% for song in current %}
       <tr>
         <td>{{ song.artist }}</td>
         <td>{{ song.title }}</td>
+        <td>
+          {% if song.drive_link %}
+            <a href="{{ song.drive_link }}" target="_blank">Link</a>
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
   </table>

@@ -13,6 +13,8 @@ class Song(models.Model):
   has_willing_arranger = models.BooleanField(default=False)
   arranger = models.ForeignKey(User, blank=True, null=True, related_name='+')
 
+  drive_link = models.URLField(blank=True, null=True)
+
   def __unicode__(self):
     return '%s (%s)' % (self.title, self.artist)
 

@@ -18,6 +18,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'bootstrap3',
     'songs',
+    'schedule',
 )
 
 MIDDLEWARE_CLASSES = (

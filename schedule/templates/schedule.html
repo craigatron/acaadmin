@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="schedule"></div>
+{% endblock %}
+
+{% block extrascripts %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/moment.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/fullcalendar.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#schedule").fullCalendar({
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block extrahead %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fullcalendar.css" />
+{% endblock %}

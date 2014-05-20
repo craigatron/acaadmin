@@ -19,3 +19,7 @@ body {
 .unvote i {
   font-weight: bold;
 }
+
+.fc-state-highlight .fc-day-number {
+  color: black;
+}

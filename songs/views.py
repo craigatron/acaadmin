@@ -70,7 +70,7 @@ def index(request):
     v['votes'] = vote_counts
     user_vote = all_votes.filter(song=v['song'], user=request.user)[:1]
     v['user_vote'] = user_vote.get().vote if user_vote else -1
-  dictionary['proposed'] = sorted(proposed.values(), key=lambda x: x['votes'][2] - x['votes'][0])
+  dictionary['proposed'] = sorted(proposed.values(), key=lambda x: x['votes'][1] - x['votes'][0])
 
   return render(request, 'list.html', dictionary,
       context_instance=RequestContext(request))

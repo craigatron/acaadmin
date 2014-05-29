@@ -61,8 +61,14 @@ def index(request):
   states = models.Song.STATES
   dictionary = {k: songs.filter(state=states.index(k))
                 for k in states if 'proposed' != k}
-  proposed = {s.pk : {'song': s} for s in songs.filter(state=states.index('proposed'))}
-  for _, v in proposed.items():
+  proposed = [{'song': s} for s in songs.filter(state=states.index('proposed'))]
+
+  if request.GET.get('filter') == 'novote':
+    # only show songs that the user hasn't voted on yet
+    proposed = [p for p in proposed
+                if not all_votes.filter(song=v['song'], user=request.user)]
+
+  for v in proposed:
     votes = all_votes.filter(song=v['song'])
     vote_counts = [0, 0, 0]
     for vote in votes:
@@ -70,7 +76,7 @@ def index(request):
     v['votes'] = vote_counts
     user_vote = all_votes.filter(song=v['song'], user=request.user)[:1]
     v['user_vote'] = user_vote.get().vote if user_vote else -1
-  dictionary['proposed'] = sorted(proposed.values(), key=lambda x: x['votes'][1] - x['votes'][0])
+  dictionary['proposed'] = sorted(proposed, key=lambda x: x['votes'][1] - x['votes'][0])
 
   return render(request, 'list.html', dictionary,
       context_instance=RequestContext(request))

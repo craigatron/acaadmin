@@ -40,7 +40,11 @@
     {% endfor %}
   </table>
   <h3 class="pull-left">Prospective Songs</h3>
-  <a href="/songs/add" class="btn btn-success pull-right">Suggest song</a>
+  <div class="pull-right">
+    <a href="/songs?filter=novote" class="btn btn-default btn-sm">Only songs I haven't voted on</a>
+    <a href="/songs" class="btn btn-default btn-sm">All songs</a>
+    <a href="/songs/add" class="btn btn-success btn-sm">Suggest song</a>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>

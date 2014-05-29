@@ -66,7 +66,7 @@ def index(request):
   if request.GET.get('filter') == 'novote':
     # only show songs that the user hasn't voted on yet
     proposed = [p for p in proposed
-                if not all_votes.filter(song=v['song'], user=request.user)]
+                if not all_votes.filter(song=p['song'], user=request.user)]
 
   for v in proposed:
     votes = all_votes.filter(song=v['song'])

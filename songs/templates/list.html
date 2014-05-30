@@ -23,22 +23,26 @@
     {% endfor %}
   </table>
   <h3>Being Arranged</h3>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Artist</th>
-        <th>Title</th>
-        <th>Arranger</th>
-      </tr>
-    </thead>
-    {% for song in arranging %}
-      <tr>
-        <td>{{ song.artist }}</td>
-        <td>{{ song.title }}</td>
-        <td>{{ song.arranger.first_name }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+  {% if not arranging %}
+    <h4>Nothing currently being arranged!</h4>
+  {% else %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Title</th>
+          <th>Arranger</th>
+        </tr>
+      </thead>
+      {% for song in arranging %}
+        <tr>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.title }}</td>
+          <td>{{ song.arranger.first_name }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
   <h3 class="pull-left">Prospective Songs</h3>
   <div class="pull-right">
     <a href="/songs?filter=novote" class="btn btn-default btn-sm">Only songs I haven't voted on</a>

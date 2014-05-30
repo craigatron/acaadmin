@@ -57,7 +57,7 @@
         <th>Title</th>
         <th>URL</th>
         <th>Votes</th>
-        <th>Arrangers</th>
+        <th>Has Arranger?</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -71,7 +71,13 @@
           <td>
             <span class="green">+{{ song.votes.0 }}</span> / {{ song.votes.2 }} / <span class="red">-{{ song.votes.1 }}</span>
           </td>
-          <td></td>
+          <td>
+            {% if s.has_willing_arranger %}
+              <i class="fa fa-check fa-lg green"></i>
+            {% elif is_arranger %}
+            <button type="button" class="btn btn-success btn-xs arrange" data-song="{{ s.pk }}">I'll do it!</button>
+            {% endif %}
+          </td>
           <td>
             {% comment %}Smiley{% endcomment %}
             {% if song.user_vote == 0 %}
@@ -115,9 +121,9 @@
     function vote(e, type) {
       var song_id = $(e.target).parent().data('song');
       $.get('/songs/' + song_id + '/vote/' + type,
-          function(data) {
-              location.reload(true);
-          }
+        function(data) {
+          location.reload(true);
+        }
       );
     }
 
@@ -133,6 +139,14 @@
       });
       $('.unvote').click(function(e) {
         vote(e, 'x');
+      });
+      $('.arrange').click(function(e) {
+        var song_id = $(e.target).data('song');
+        $.get('/songs/' + song_id + '/arrange',
+          function(data) {
+            location.reload(true);
+          }
+        );
       });
     });
   </script>

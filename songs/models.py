@@ -2,6 +2,11 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Song(models.Model):
+  class Meta:
+    permissions = (
+        ('arrange', 'Can arrange'),
+    )
+
   STATES = ['proposed', 'rejected', 'arranging', 'current', 'retired']
 
   suggested_by = models.ForeignKey(User, related_name='+')

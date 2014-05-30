@@ -55,6 +55,19 @@ def vote(request, song_id, vote):
   return HttpResponse()
 
 @login_required
+def arrange(request, song_id):
+  song = models.Song.objects.get(pk=song_id)
+  if not song:
+    return HttpResponseBadRequest()
+
+  if not request.user.has_perm('songs.arrange'):
+    return HttpResponseBadRequest()
+
+  song.has_willing_arranger = True
+  song.save()
+  return HttpResponse()
+
+@login_required
 def index(request):
   songs = models.Song.objects.all()
   all_votes = models.Vote.objects.all()
@@ -77,6 +90,8 @@ def index(request):
     user_vote = all_votes.filter(song=v['song'], user=request.user)[:1]
     v['user_vote'] = user_vote.get().vote if user_vote else -1
   dictionary['proposed'] = sorted(proposed, key=lambda x: x['votes'][1] - x['votes'][0])
+
+  dictionary['is_arranger'] = request.user.has_perm('songs.arrange')
 
   return render(request, 'list.html', dictionary,
       context_instance=RequestContext(request))

@@ -23,6 +23,18 @@ class Song(models.Model):
   def __unicode__(self):
     return '%s (%s)' % (self.title, self.artist)
 
+  def score(self):
+    votes = Vote.objects.all().filter(song=self)
+    score = 0
+    for v in votes:
+      if v.vote == 0:
+        score += 1
+      elif v.vote == 1:
+        score -= 1
+    if self.has_willing_arranger:
+      score += 0.5
+    return score
+
 class Vote(models.Model):
   VOTE_CHOICES = (
       (0, 'yes'), (1, 'no'), (2, 'meh')

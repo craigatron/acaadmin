@@ -10,14 +10,14 @@ body {
   color: #7CFC00;
 }
 
+.yellow {
+  color: #FFFF00;
+}
+
 .vote {
   display: inline-block;
   cursor: pointer;
   margin: 0 2px;
-}
-
-.unvote i {
-  font-weight: bold;
 }
 
 .fc-state-highlight .fc-day-number {

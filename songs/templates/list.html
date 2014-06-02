@@ -52,13 +52,13 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Suggested By</th>
-        <th>Artist</th>
-        <th>Title</th>
-        <th>URL</th>
-        <th>Votes</th>
-        <th>Has Arranger?</th>
-        <th>Actions</th>
+        <th class="col-md-2">Suggested By</th>
+        <th class="col-md-2">Artist</th>
+        <th class="col-md-3">Title</th>
+        <th class="col-md-1">URL</th>
+        <th class="col-md-1">Votes</th>
+        <th class="col-md-1">Has Arranger?</th>
+        <th class="col-md-2">Actions</th>
       </tr>
     </thead>
     {% for song in proposed %}
@@ -75,7 +75,7 @@
             {% if s.has_willing_arranger %}
               <i class="fa fa-check fa-lg green"></i>
             {% elif is_arranger %}
-              <button type="button" class="btn btn-success btn-xs arrange" data-song="{{ s.pk }}">I'll do it!</button>
+              <a href="#" class="arrange" data-song="{{ s.pk }}">I'll do it!</a>
             {% endif %}
           </td>
           <td>
@@ -85,7 +85,7 @@
             {% else %}
               <div class="vote upvote" title="I like this!" data-song="{{ s.pk }}">
             {% endif %}
-              <i class="fa fa-smile-o fa-lg green"></i>
+              <i class="fa fa-smile-o fa-lg{% if song.user_vote == 0 %} green{% endif %}"></i>
             </div>
             {% comment %}Meh{% endcomment %}
             {% if song.user_vote == 2 %}
@@ -93,7 +93,7 @@
             {% else %}
               <div class="vote mehvote" title="Meh" data-song="{{ s.pk }}">
             {% endif %}
-              <i class="fa fa-meh-o fa-lg"></i>
+              <i class="fa fa-meh-o fa-lg{% if song.user_vote == 2 %} yellow{% endif %}"></i>
             </div>
             {% comment %}Frowny{% endcomment %}
             {% if song.user_vote == 1 %}
@@ -101,7 +101,7 @@
             {% else %}
               <div class="vote downvote" title="I don't like this!" data-song="{{ s.pk }}">
             {% endif %}
-              <i class="fa fa-frown-o fa-lg red"></i>
+              <i class="fa fa-frown-o fa-lg{% if song.user_vote == 1 %} red{% endif %}"></i>
             </div>
 
             {% if s.suggested_by == user %}

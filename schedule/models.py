@@ -13,6 +13,9 @@ class Event(models.Model):
   start_time = models.DateTimeField()
   end_time = models.DateTimeField(blank=True, null=True)
 
+  def __unicode__(self):
+    return ', '.join((self.name, str(self.start_time)))
+
 class Attendance(models.Model):
   user = models.ForeignKey(User)
   event = models.ForeignKey(Event)

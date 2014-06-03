@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block extrascripts %}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/moment.min.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}js/fullcalendar.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.0/fullcalendar.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       $("#schedule").fullCalendar({
@@ -16,5 +16,6 @@
 {% endblock %}
 
 {% block extrahead %}
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fullcalendar.css" />
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.0/fullcalendar.css" />
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.0/fullcalendar.print.css" />
 {% endblock %}

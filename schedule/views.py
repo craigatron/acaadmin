@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
 from schedule.models import Event, Attendance
@@ -45,12 +45,16 @@ def event_view(request, event_id):
 def change_attendance(request, event_id):
   event = Event.objects.get(id=event_id)
   attendance = Attendance.objects.filter(event=event, user=request.user)
-  can_attend = request.GET.get('can_attend') == '1'
-  if attendance and can_attend != attendance[0].can_attend:
-    attendance[0].can_attend = can_attend
-    attendance[0].save()
-  elif not attendance:
-    attendance = Attendance(user=request.user, can_attend=can_attend)
-    attendance.save()
+  can_attend = request.GET.get('can_attend')
+  if can_attend == 'x' and attendance:
+    attendance[0].delete()
+  else:
+    can_attend = can_attend == '1'
+    if attendance and (can_attend == '1') != attendance[0].can_attend:
+      attendance[0].can_attend = can_attend
+      attendance[0].save()
+    elif not attendance:
+      attendance = Attendance(user=request.user, event=event, can_attend=can_attend)
+      attendance.save()
 
-  return HttpResponse()
+  return HttpResponseRedirect('/schedule/%s' % event_id)

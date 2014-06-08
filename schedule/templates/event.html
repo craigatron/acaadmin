@@ -4,12 +4,17 @@
   <div class="container">
     <h1>{{ event.name }}</h1>
     <p>{{ event.location }}</p>
-    <p>{{ event.start_time|date:"SHORT_DATETIME_FORMAT" }}
+    <p>{{ event.start_time|date:"D, N j, Y, g:i a" }}
     {% if event.end_time %}
-      - {{ event.end_time|date:"SHORT_DATETIME_FORMAT" }}
+      - {{ event.end_time|time:"g:i a" }}
     {% endif %}
     </p>
     <h2>Attendance</h2>
+    <div class="container">
+      <a href="/schedule/{{ event.pk }}/change/?can_attend=1" class="btn btn-success">I can make this!</a>
+      <a href="/schedule/{{ event.pk }}/change/?can_attend=0" class="btn btn-danger">I can't make this!</a>
+      <a href="/schedule/{{ event.pk }}/change/?can_attend=x" class="btn btn-default">I don't know if I can make this!</a>
+    </div>
     <div class="row">
       <div class="col-md-4">
         <h3>Attending</h3>
@@ -28,7 +33,7 @@
         </ul>
       </div>
       <div class="col-md-4">
-        <h3>No Response</h3>
+        <h3>No Response/Unsure</h3>
         <ul>
           {% for person in no_response %}
             <li>{{ person }}</li>

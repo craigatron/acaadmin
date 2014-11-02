@@ -23,3 +23,7 @@ body {
 .fc-state-highlight .fc-day-number {
   color: black;
 }
+
+#schedule .fc-event {
+  cursor: pointer;
+}

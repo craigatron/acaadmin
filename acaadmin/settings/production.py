@@ -1,11 +1,17 @@
-import dj_database_url
+"""Django settings for the acaadmin project."""
+
 import os
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+BASE_DIR = os.path.abspath(os.path.join(SITE_ROOT, '..'))
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # Application definition
+
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -47,7 +53,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(SITE_ROOT, 'templates'),
+)
+
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+      'django.template.loaders.filesystem.Loader',
+      'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 SOCIAL_AUTH_PIPELINE = (
@@ -81,20 +94,62 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = 'staticfiles'
+# Static files stuff
+
+STATICFILES_STORAGE = 'require_s3.storage.OptimizedCachedStaticFilesStorage'
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_AUTO_CREATE_BUCKET = True
+AWS_HEADERS = {
+    'Cache-Control': 'public, max-age=86400',
+}
+AWS_S3_FILE_OVERWRITE = False
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_SECURE_URLS = True
+AWS_REDUCED_REDUNDANCY = False
+AWS_IS_GZIPPED = False
+STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(SITE_ROOT, 'static'),
 )
+
+# Cache stuff
+
+CACHE_MIDDLEWARE_KEY_PREFIX = 'acaadmin'
+
+CACHES = {
+    'default': {
+      'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    # Long cache timeout for staticfiles, since this is used heavily
+    # by the optimizing storage.
+    'staticfiles': {
+      'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+      'TIMEOUT': 60 * 60 * 24 * 365,
+      'LOCATION': 'staticfiles',
+    },
+}
+
+# Logging config
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+      'console': {
+        'level': 'INFO',
+        'class': 'logging.StreamHandler',
+      },
+    },
+    'loggers': {
+      'django': {
+        'handlers': ['console'],
+      },
+    },
+}
 
 LOGIN_URL = '/login/google'
 LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/error'
-
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-STATICFILES_STORAGE = 'acaadmin.storage.FixAdminStorage'
-S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-STATIC_URL = S3_URL
-AWS_QUERYSTRING_AUTH = False

@@ -54,3 +54,6 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# root static files
+/static
+/media

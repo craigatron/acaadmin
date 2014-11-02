@@ -1,1 +1,1 @@
-web: gunicorn acaadmin.wsgi
+web: waitress-serve --port=$PORT acaadmin.wsgi:application

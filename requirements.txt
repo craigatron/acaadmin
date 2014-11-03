@@ -16,7 +16,9 @@ python-openid==2.2.5
 python-social-auth==0.2.1
 requests==2.4.3
 requests-oauthlib==0.4.2
+sendgrid==1.2.0
 six==1.8.0
+smtpapi==0.1.2
 static==1.1.1
-static3==0.5.1
+unittest2==0.7.1
 waitress==0.8.9

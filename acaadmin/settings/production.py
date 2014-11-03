@@ -35,10 +35,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOpenId',
-    'django.contrib.auth.backends.ModelBackend',
-)
+# Templates
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -63,6 +60,13 @@ TEMPLATE_LOADERS = (
     )),
 )
 
+# Authentication
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOpenId',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -73,6 +77,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
 )
+
+LOGIN_URL = '/login/google'
+LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/error'
+
+# Additional configuration
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -150,6 +160,10 @@ LOGGING = {
     },
 }
 
-LOGIN_URL = '/login/google'
-LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/error'
+# Email settings
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False

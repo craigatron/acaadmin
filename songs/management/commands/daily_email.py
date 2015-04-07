@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from songs.models import Song, Vote
 
 import logging
@@ -50,7 +50,7 @@ Songs you still need to vote on:
 
         try:
           sg.send(message)
-        except SendGridClientError:
+        except sendgrid.SendGridClientError:
           logging.exception('Client error.')
-        except SendGridServerError:
+        except sendgrid.SendGridServerError:
           logging.exception('Server error.')

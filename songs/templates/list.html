@@ -38,7 +38,7 @@
         <tr>
           <td>{{ song.artist }}</td>
           <td>{{ song.title }}</td>
-          <td>{{ song.arranger.first_name }}</td>
+          <td>{{ song.arranger.username.capitalize() }}</td>
         </tr>
       {% endfor %}
     </table>
@@ -64,7 +64,7 @@
     {% for song in proposed %}
       {% with s=song.song %}
         <tr>
-          <td>{{ s.suggested_by.first_name }}</td>
+          <td>{{ s.suggested_by.username.capitalize() }}</td>
           <td>{{ s.artist }}</td>
           <td>{{ s.title }}</td>
           <td><a href="{{ s.song_url }}" target="_blank">Link</a></td>

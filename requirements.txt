@@ -13,7 +13,7 @@ httplib2==0.9.1
 linecache2==1.0.0
 oauth2==1.5.211
 oauthlib==0.7.2
-psycopg2==2.6
+psycopg2==2.6.1
 pystache==0.5.4
 python-openid==2.2.5
 python-social-auth==0.2.10

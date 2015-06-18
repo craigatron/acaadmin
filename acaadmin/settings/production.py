@@ -11,7 +11,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 # Application definition
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = [
+    '.herokuapp.com',
+    '.powarrangers.com'
+]
 
 INSTALLED_APPS = (
     'django.contrib.admin',

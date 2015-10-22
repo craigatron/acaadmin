@@ -31,11 +31,10 @@ def event_view(request, event_id):
     attendances = Attendance.objects.filter(event=event)
     all_users = list(User.objects.all())
     for a in attendances:
-        full_name = ' '.join((a.user.first_name, a.user.last_name))
-        d['attending' if a.can_attend else 'not_attending'].append(full_name)
+        d['attending' if a.can_attend else 'not_attending'].append(a.user.first_name)
         all_users.remove(a.user)
 
-    d['no_response'] = [' '.join((u.first_name, u.last_name)) for u in all_users]
+    d['no_response'] = [u.first_name for u in all_users]
 
     return render(request, 'event.html', d,
                   context_instance=RequestContext(request))

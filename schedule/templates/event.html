@@ -20,7 +20,7 @@
         <h3>Attending</h3>
         <ul>
           {% for person in attending %}
-            <li>{{ person }}</li>
+            <li>{{ person.first_name }}</li>
           {% endfor %}
         </ul>
       </div>
@@ -28,7 +28,7 @@
         <h3>Not Attending</h3>
         <ul>
           {% for person in not_attending %}
-            <li>{{ person }}</li>
+            <li>{{ person.first_name }}</li>
           {% endfor %}
         </ul>
       </div>
@@ -36,7 +36,7 @@
         <h3>No Response/Unsure</h3>
         <ul>
           {% for person in no_response %}
-            <li>{{ person }}</li>
+            <li>{{ person.first_name }}</li>
           {% endfor %}
         </ul>
       </div>

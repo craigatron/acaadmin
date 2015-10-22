@@ -1,10 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template import RequestContext
 from schedule.models import Event, Attendance
-import json
 
 @login_required
 def index(request):
@@ -21,7 +20,7 @@ def event_feed(request):
             event_dict['end'] = str(e.end_time)
         results.append(event_dict)
 
-    return HttpResponse(json.dumps(results), mimetype='application/json')
+    return JsonResponse(results)
 
 @login_required
 def event_view(request, event_id):

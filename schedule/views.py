@@ -20,7 +20,7 @@ def event_feed(request):
             event_dict['end'] = str(e.end_time)
         results.append(event_dict)
 
-    return JsonResponse(results)
+    return JsonResponse(results, safe=False)
 
 @login_required
 def event_view(request, event_id):

@@ -17,6 +17,9 @@ class Command(BaseCommand):
     for user in User.objects.all():
       if not user.email:
         continue
+      elif user.groups.filter(name='retired').exists():
+        # don't email our old members!
+        continue
 
       unvoted_songs = []
       for song in prospective_songs:
